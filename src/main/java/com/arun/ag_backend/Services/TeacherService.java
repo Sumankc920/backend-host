@@ -1,14 +1,14 @@
 package com.arun.ag_backend.Services;
 
+import com.arun.ag_backend.Entities.*;
 import com.arun.ag_backend.Entities.Class;
-import com.arun.ag_backend.Entities.Subject;
-import com.arun.ag_backend.Entities.Teacher;
-import com.arun.ag_backend.Entities.Users;
+import com.arun.ag_backend.Repo.AttendanceRepo;
 import com.arun.ag_backend.Repo.TeacherRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,6 +23,8 @@ public class TeacherService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AttendanceRepo attendanceRepo;
     public void save_teacher(Users user) {
 
         Teacher teacher = new Teacher();
@@ -60,6 +62,10 @@ public class TeacherService {
     }
 
 
+    public List<String> findAttendance(String sub_name , LocalDate date , int class_id){
+
+        return attendanceRepo.findBySubjectAndDate(sub_name, date, class_id);
+    }
 
 
     public List<Class> get_teacher_classes(String email){

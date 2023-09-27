@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
@@ -26,5 +27,24 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
             @Param("date") LocalDate date
 
     );
+
+
+    @Query("SELECT a.student.user.name FROM Attendance a " +
+            "WHERE a.classRoutine.subject.short_name = :subjectName " +
+            "AND a.date = :date " +
+            "AND a.classRoutine.aClass.class_id = :class_id")
+    List<String> findBySubjectAndDate(
+            @Param("subjectName") String subjectName,
+            @Param("date") LocalDate date ,
+            @Param("class_id") int class_id
+    );
+
+
+    @Query("select a.status from Attendance a " +
+            "where a.student.roll = :roll " +
+            "and a.date =:date " +
+            "and a.classRoutine.subject.short_name = :sub_name"
+     )
+    String findStudentAttendaance(@Param("date") LocalDate date , @Param("roll") int roll , @Param("sub_name") String sub_name);
 
 }

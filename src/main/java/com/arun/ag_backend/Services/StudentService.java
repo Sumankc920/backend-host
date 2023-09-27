@@ -9,6 +9,7 @@ import com.arun.ag_backend.Entities.Subject;
 import com.arun.ag_backend.Entities.Users;
 import com.arun.ag_backend.Repo.OtpRepo;
 import com.arun.ag_backend.Repo.StudentRepo;
+import com.arun.ag_backend.Repo.TeacherSubjectRepo;
 import com.arun.ag_backend.Repo.UserRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.json.JsonArray;
+import java.security.Principal;
 import java.util.*;
 
 @Service
@@ -31,6 +33,9 @@ public class StudentService {
 
     @Autowired
     private OtpRepo otpRepo;
+    @Autowired
+    private TeacherSubjectRepo teacherSubjectRepo;
+
 
     public void save_student(Users user , int roll , Class aClass) {
 
@@ -80,4 +85,20 @@ public class StudentService {
 
         return json;
     }
+
+
+
+    public int find_class_id(String email){
+        Optional<Student> student = studentRepo.findByUserEmail(email);
+        if (student.isPresent()){
+            return student.get().getAClass().getClass_id();
+        }
+        return 0;
+    }
+
+    public String find_teacher_name_by_subject(int sub_id , int class_id){
+        return teacherSubjectRepo.findTeacherBy(class_id , sub_id);
+
+    }
+
 }

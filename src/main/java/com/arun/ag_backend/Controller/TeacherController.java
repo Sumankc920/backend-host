@@ -1,14 +1,13 @@
 package com.arun.ag_backend.Controller;
 
+import com.arun.ag_backend.Dto.HelperDTO.TeacherGetAttendance;
+import com.arun.ag_backend.Entities.Attendance;
 import com.arun.ag_backend.Entities.Class;
 import com.arun.ag_backend.Entities.Subject;
 import com.arun.ag_backend.Services.TeacherService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -51,5 +50,12 @@ public class TeacherController {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    @RequestMapping("/get_attendance")
+    public List<String> get_attendance(@RequestBody TeacherGetAttendance tbody){
+        return teacherService.findAttendance(tbody.getSub_name() , tbody.getDate() , tbody.getClass_id());
+
     }
 }
