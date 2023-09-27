@@ -1,0 +1,78 @@
+use AttendanceGuru
+;
+
+
+INSERT INTO subject ( name , short_name, credit_hours )
+VALUES
+  ('Object Oriented Software Development ','OOSD', 3),
+  ( 'Principles of Programming Languages	' , 'PPL', 3),
+  ( 'Project II', 'PII', 2),
+  ( 'Computer Network' ,'CN', 3),
+  ( 'Engineering Economics ', 'EE', 3),
+  ( 'Multimedia System ', 'MMS', 3);
+  
+ 
+ INSERT INTO class ( faculty , room_no , semester , shift)
+VALUES
+  ('BE Software', 901 , 6 ,  'M' ) ,
+  ('BE Software' , 902, 6 ,  'D' );
+  
+ 
+ 
+ INSERT INTO class_subjects (class_id, subject_id)
+SELECT c.class_id, s.subject_id
+FROM class c, subject s
+WHERE c.faculty = 'Be Software'
+  AND s.short_name IN ('OOSD', 'PPL', 'PII', 'CN', 'EE', 'MMS');
+ 
+ 
+ INSERT INTO admin_assigned_users (user_email, user_role ,  roll ,class_id)
+VALUES 
+  ('arun.191610@ncit.edu.np', 'Student' , 191610 , 1),
+  ('rkmarseni@ncit.edu.np', 'Teacher' , 0 ,null);
+
+ 
+ SELECT c.faculty ,c.semester  ,c.shift , s.subject_id, s.name a, s.credit_hours 
+FROM admin_assigned_users u
+LEFT JOIN class c ON u.class_id = c.class_id
+LEFT JOIN subject s ON s.subject_id = s.subject_id
+WHERE u.user_email = 'arun.191610@ncit.edu.np';
+
+DELETE  from students  WHERE user_id =2;
+DELETE from user WHERE email = 'arun.191610@ncit.edu.np';
+
+
+INSERT INTO  teacher_subjects (user_email , class_id , subject_id)
+select u.user_email , c.class_id , s.subject_id
+from admin_assigned_users u , class c ,subject s
+WHERE u.user_email ='rkmarseni@ncit.edu.np' and c.room_no = 902 and s.short_name = 'OOSD';
+
+
+
+SELECT c.faculty ,c.semester  ,c.shift , s.name a, s.credit_hours  from teacher_subjects ts
+LEFT JOIN class c ON ts.class_id = c.class_id
+LEFT JOIN subject s ON ts.subject_id = s.subject_id
+WHERE user_email = 'rkmarseni@ncit.edu.np';
+
+SELECT * FROM  teacher_subjects ;
+
+Select s.short_name from class_subjects cs 
+left join subject s on s.subject_id =cs.subject_id 
+left join class c on c.class_id = cs.class_id 
+where c.semester = 6 and c.shift = "M";
+
+
+select u.email , st.roll_no  from teacher_subjects ts 
+left join user u on ts.user_email = u.email 
+left JOIN students st on ts.class_id  = st.class_id 
+left join subject s on ts.subject_id  = s.subject_id 
+left join class c on ts.class_id  = c.class_id 
+where c.semester  = 6 and c.shift  = "M" and s.short_name = "PPL";
+
+
+
+delete from attendance ;
+DELETE FROM students ;
+DELETE from otp ;
+DELETE from teachers  ;
+DELETE  from `user` ;
