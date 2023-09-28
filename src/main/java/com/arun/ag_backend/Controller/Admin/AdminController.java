@@ -1,10 +1,8 @@
 package com.arun.ag_backend.Controller.Admin;
 
 import com.arun.ag_backend.Dto.SubjectInfo;
-import com.arun.ag_backend.Entities.Student;
-import com.arun.ag_backend.Entities.Subject;
-import com.arun.ag_backend.Entities.Teacher;
-import com.arun.ag_backend.Entities.Users;
+import com.arun.ag_backend.Entities.*;
+import com.arun.ag_backend.Repo.AdminRepo;
 import com.arun.ag_backend.Repo.StudentRepo;
 import com.arun.ag_backend.Repo.SubjectRepo;
 import com.arun.ag_backend.Repo.TeacherRepo;
@@ -35,6 +33,8 @@ public class AdminController {
     @Autowired
     private TeacherRepo teacherRepo;
 
+    @Autowired
+    private AdminRepo adminRepo;
 
     @Autowired
     private SubjectRepo subjectRepo;
@@ -80,4 +80,20 @@ public class AdminController {
         return  objs;
     }
 
+    @RequestMapping("/signIn")
+    public String signup(@RequestBody LoginDetails loginDetails){
+
+        Optional<Admin> admin = adminRepo.findByEmail(loginDetails.getEmail());
+        if(admin.isPresent()){
+            System.out.println(admin.get().toString());
+            if(admin.get().getPassword().equals(loginDetails.getPassword())){
+                return "success";
+            }
+            else{
+                return "invalid";
+            }
+        }else {
+            return "invalid";
+        }
+    }
 }
