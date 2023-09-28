@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-@CrossOrigin(origins = "${cross.origin.url}", allowCredentials = "true")
+//@CrossOrigin(origins = "${cross.origin.url}", allowedHeaders = "Authorization")
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController {

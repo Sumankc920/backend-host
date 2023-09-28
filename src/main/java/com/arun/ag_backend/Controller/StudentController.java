@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@CrossOrigin(origins = "${cross.origin.url}", allowCredentials = "true")
+//@CrossOrigin(origins = "${cross.origin.url}", allowCredentials = "true")
 @RestController
 @RequestMapping("/student")
 public class StudentController {

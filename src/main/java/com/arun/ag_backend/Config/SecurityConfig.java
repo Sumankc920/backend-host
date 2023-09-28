@@ -22,7 +22,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -44,11 +48,11 @@ public class SecurityConfig {
     private JwtRequestFilter filter;
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-//    @Autowired
+    //    @Autowired
 ////    private JwtRequestFilter filter;
 //
 //    @Bean
@@ -70,24 +74,24 @@ public class SecurityConfig {
 //    }
 //
     @Bean
-    public DaoAuthenticationProvider teacherAuthProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider =new DaoAuthenticationProvider();
+    public DaoAuthenticationProvider teacherAuthProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(teacherDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         return daoAuthenticationProvider;
     }
 
     @Bean
-    public DaoAuthenticationProvider studentAuthProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider =new DaoAuthenticationProvider();
+    public DaoAuthenticationProvider studentAuthProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(studentDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         return daoAuthenticationProvider;
     }
 
     @Bean
-    public DaoAuthenticationProvider userAuthProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider =new DaoAuthenticationProvider();
+    public DaoAuthenticationProvider userAuthProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         return daoAuthenticationProvider;
@@ -96,20 +100,35 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
-        return new ProviderManager(List.of(userAuthProvider(),studentAuthProvider() ,  teacherAuthProvider()));
+        return new ProviderManager(List.of(userAuthProvider(), studentAuthProvider(), teacherAuthProvider()));
 //        return new ProviderManager(userAuthProvider());
     }
 
 
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().
                 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
                 and().
-                authorizeHttpRequests().requestMatchers("/signIn" , "/signup" ,"/signup/**" , "/admin/**" , "/attendance/**").permitAll()
+                cors().configurationSource(corsConfigurationSource())
+                .and().
+                authorizeHttpRequests().requestMatchers("/signIn", "/signup", "/signup/**", "/admin/**", "/attendance/**").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Allow requests from your React frontend
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Include OPTIONS for preflight requests
+        configuration.setAllowedHeaders(Arrays.asList("Authorization" , "*")); // Allow any headers
+        configuration.setAllowCredentials(true); // Allow credentials, e.g., for Bearer tokens
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 }
