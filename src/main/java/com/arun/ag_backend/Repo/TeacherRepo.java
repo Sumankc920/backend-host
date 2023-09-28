@@ -31,13 +31,8 @@ public interface TeacherRepo extends JpaRepository<Teacher, Integer > {
     Subject findTeacherSubject(@Param("classId") int classId, @Param("email") String email);
 
 
-    @Query("SELECT u.email , u.name , u.role FROM Users u " +
-            "JOIN Teacher  t on u.id =  t.user.id " +
-             "join TeacherSubjects ts on t.user.email = ts.users.email " +
-            "join Class c on ts.aClass.class_id = c.class_id " +
-            " join ClassSubjects cs on ts.aClass.class_id = cs.aClass.class_id" +
-            " join Subject st on cs.subject.subject_id = st.subject_id " +
-            "WHERE c.semester  = :semester  and c.shift = :shift and st.short_name = :subject_name ")
+
+    @Query("select t.users.email from TeacherSubjects t where t.aClass.shift=:shift and t.aClass.semester =:semester and t.subject.short_name=:subject_name")
     Object findTeacherBySemAndShiftAndSubject(@Param("subject_name") String subject_name ,@Param("semester") int semester , @Param("shift") String shift);
 
 

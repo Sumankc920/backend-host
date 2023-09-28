@@ -1,5 +1,6 @@
 package com.arun.ag_backend.Controller.Admin;
 
+import com.arun.ag_backend.Dto.HelperDTO.AdminSendDetails;
 import com.arun.ag_backend.Dto.SubjectInfo;
 import com.arun.ag_backend.Entities.*;
 import com.arun.ag_backend.Entities.Class;
@@ -72,18 +73,20 @@ public class AdminController {
     }
 
     @PostMapping("/get_sub_details")
-    public List<Object> findSubjectALLDetails(@RequestBody SubjectInfo s ){
+    public AdminSendDetails findSubjectALLDetails(@RequestBody SubjectInfo s ){
         Optional<Subject> sub = subjectRepo.findByShort_name(s.getSub_name());
 
-
+        System.out.println(sub.get().toString());
         Object obj = teacherRepo.findTeacherBySemAndShiftAndSubject(s.getSub_name() , s.getSemester() , s.getShift());
         System.out.printf(obj.toString());
         List<Object> objs =  admin_service.get_sub_all_details(s.getSub_name() , s.getSemester() , s.getShift());
+        AdminSendDetails ad = new AdminSendDetails();
+        ad.setStudent(objs);
+        ad.setSubject(sub.get());
+        ad.setTeacher_email(obj);
 
-        objs.add(obj);
-        objs.add(sub);
 
-        return  objs;
+        return  ad;
     }
 
     @RequestMapping("/signIn")
