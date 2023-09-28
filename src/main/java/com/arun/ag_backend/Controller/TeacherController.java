@@ -3,12 +3,14 @@ package com.arun.ag_backend.Controller;
 import com.arun.ag_backend.Dto.HelperDTO.TeacherGetAttendance;
 import com.arun.ag_backend.Entities.Attendance;
 import com.arun.ag_backend.Entities.Class;
+import com.arun.ag_backend.Entities.Student;
 import com.arun.ag_backend.Entities.Subject;
 import com.arun.ag_backend.Services.TeacherService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.List;
 

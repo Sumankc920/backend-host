@@ -121,7 +121,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Allow requests from your React frontend
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173" , "http://localhost:1420")); // Allow requests from your React frontend
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Include OPTIONS for preflight requests
         configuration.setAllowedHeaders(Arrays.asList("Authorization" , "*")); // Allow any headers
         configuration.setAllowCredentials(true); // Allow credentials, e.g., for Bearer tokens
