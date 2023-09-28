@@ -15,7 +15,7 @@ public interface TeacherRepo extends JpaRepository<Teacher, Integer > {
     @Query("SELECT t FROM Teacher t WHERE t.user.email = :email")
     Optional<Teacher> findByUserEmail(@Param("email") String email);
 
-    @Query("SELECT u.name , u.email FROM Users u WHERE u.role = 'teacher'")
+    @Query("SELECT   u.email FROM Users u WHERE u.role = 'teacher'")
     List<Object> findAllTeachers();
 
     @Query("SELECT   c FROM Class c " +

@@ -2,10 +2,8 @@ package com.arun.ag_backend.Controller.Admin;
 
 import com.arun.ag_backend.Dto.SubjectInfo;
 import com.arun.ag_backend.Entities.*;
-import com.arun.ag_backend.Repo.AdminRepo;
-import com.arun.ag_backend.Repo.StudentRepo;
-import com.arun.ag_backend.Repo.SubjectRepo;
-import com.arun.ag_backend.Repo.TeacherRepo;
+import com.arun.ag_backend.Entities.Class;
+import com.arun.ag_backend.Repo.*;
 import com.arun.ag_backend.Services.Admin_a_User_Service;
 import com.arun.ag_backend.Services.ClassRoutineService;
 import com.arun.ag_backend.Services.SubjectService;
@@ -38,6 +36,14 @@ public class AdminController {
 
     @Autowired
     private SubjectRepo subjectRepo;
+
+    @Autowired
+    private ClassSubjectRepo classSubjectRepo;
+
+    @Autowired
+    private TeacherSubjectRepo teacherSubjectRepo;
+    @Autowired
+    private ClassRepo classRepo;
 
 
     @PostMapping("/add/classRoutine")
@@ -95,5 +101,45 @@ public class AdminController {
         }else {
             return "invalid";
         }
+    }
+
+    @RequestMapping("/add_classroom")
+    public String add_subject_to_classroom(@RequestBody SubjectInfo s){
+
+        Optional<Subject> sub = subjectRepo.findByShort_name(s.getSub_name());
+
+
+        Optional<Subject> subject = subjectRepo.findByShort_name(s.getSub_name());
+
+
+        Optional<Teacher> teacher = teacherRepo.findByUserEmail(s.getTeacher_email());
+
+        Optional<Class> aclass = classRepo.findBySem_faculty_shift(s.getSemester(), s.getShift());
+
+//        Optional<Subject> is_sub = classSubjectRepo.findBySubject(aclass.get());
+//
+//        if(is_sub.isPresent()){
+//
+//            return  "Already present";
+//        }
+        if(subject.isPresent() && teacher.isPresent() && aclass.isPresent()){
+            ClassSubjects cs = new ClassSubjects();
+            cs.setAClass(aclass.get());
+            cs.setSubject(subject.get());
+            classSubjectRepo.save(cs);
+
+            Optional<Admin_assigned_Users> users = admin_service.findByEmail(s.getTeacher_email());
+            TeacherSubjects ts = new TeacherSubjects();
+            ts.setAClass(aclass.get());
+            ts.setUsers(users.get());
+            ts.setSubject(subject.get());
+            teacherSubjectRepo.save(ts);
+
+            return "success" ;
+        }
+
+
+    return "Fail" ;
+
     }
 }

@@ -14,4 +14,6 @@ public interface ClassRepo extends JpaRepository<Class , Integer> {
     @Query("SELECT c from Class c where c.room_no = :room_no")
     Optional<Class> findByRoom_no(@Param("room_no") int room_no);
 
+    @Query("select  c from Class c where c.shift=:shift  and c.semester=:semester")
+    Optional<Class> findBySem_faculty_shift(@Param("semester") int semester , @Param("shift") String shift);
 }

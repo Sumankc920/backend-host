@@ -12,4 +12,5 @@ public class SubjectInfo {
     private int semester;
     private  String shift;
     private  String sub_name;
+    private String teacher_email;
 }
