@@ -29,7 +29,7 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
     );
 
 
-    @Query("SELECT a.student.user.name FROM Attendance a " +
+    @Query("SELECT a.student.user.email FROM Attendance a " +
             "WHERE a.classRoutine.subject.short_name = :subjectName " +
             "AND a.date = :date " +
             "AND a.classRoutine.aClass.class_id = :class_id")
