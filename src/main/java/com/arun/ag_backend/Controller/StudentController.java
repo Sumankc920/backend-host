@@ -59,16 +59,24 @@ public class StudentController {
         Optional<Student> student = studentRepo.findByUserEmail(principal.getName());
 
         List<String> list = new ArrayList<>();
-        if (subject.isPresent()){
+        if (subject.isPresent()) {
             int sub_id = subject.get().getSubject_id();
             System.out.println(sub_id);
-            list.add(studentService.find_teacher_name_by_subject(sub_id , class_id));
-        }
-        if (student.isPresent()){
-            String status = attendanceRepo.findStudentAttendaance(tbody.getDate() ,student.get().getRoll(), tbody.getSub_name());
-            list.add(status);
-        }
+            list.add(subject.get().getName());
+            list.add(studentService.find_teacher_name_by_subject(sub_id, class_id));
 
+
+            if (student.isPresent()) {
+                String status = attendanceRepo.findStudentAttendaance(tbody.getDate(), student.get().getRoll(), tbody.getSub_name());
+                list.add(status);
+                list.add(String.valueOf(student.get().getRoll()));
+                if (status.equals("Present")) {
+                    list.add(status);
+                } else {
+                    list.add("Absent");
+                }
+            }
+        }
         return list;
     }
 
