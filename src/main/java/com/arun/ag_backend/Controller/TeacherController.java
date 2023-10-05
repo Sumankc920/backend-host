@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 //@CrossOrigin(origins = "${cross.origin.url}", allowedHeaders = "Authorization")
 @RestController
@@ -58,7 +60,13 @@ public class TeacherController {
 
     @RequestMapping("/get_attendance")
     public List<Object> get_attendance(@RequestBody TeacherGetAttendance tbody){
-        return teacherService.findAttendance(tbody.getSub_name() , tbody.getDate() , tbody.getClass_id());
+        Optional<List<Object>> stds = teacherService.findAttendance(tbody.getSub_name() , tbody.getDate() , tbody.getClass_id());
 
+        if(stds.isPresent() && !stds.get().isEmpty()){
+            System.out.println("students present");
+            return  stds.get();
+        }else {
+            return Collections.singletonList("There was no class in this date");
+        }
     }
 }

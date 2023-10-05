@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeacherService {
@@ -62,7 +63,7 @@ public class TeacherService {
     }
 
 
-    public List<Object> findAttendance(String sub_name , LocalDate date , int class_id){
+    public Optional<List<Object>> findAttendance(String sub_name , LocalDate date , int class_id){
 
         return attendanceRepo.findBySubjectAndDate(sub_name, date, class_id);
     }

@@ -14,6 +14,7 @@ import java.lang.reflect.Array;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
@@ -35,7 +36,7 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
             "WHERE a.classRoutine.subject.short_name = :subjectName " +
             "AND a.date = :date " +
             "AND a.classRoutine.aClass.class_id = :class_id")
-    List<Object> findBySubjectAndDate(
+    Optional<List<Object>> findBySubjectAndDate(
             @Param("subjectName") String subjectName,
             @Param("date") LocalDate date ,
             @Param("class_id") int class_id
