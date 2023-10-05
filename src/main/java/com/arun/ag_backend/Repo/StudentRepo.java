@@ -29,7 +29,7 @@ public interface StudentRepo extends JpaRepository<Student , Integer> {
             "WHERE u.email = :email")
     List<Object[]> findClassAndSubjectsByEmail(@Param("email") String email);
 
-    @Query("SELECT u.email , s.roll FROM Users u " +
+    @Query("SELECT u.email , s.roll ,u.name FROM Users u " +
             "JOIN Student  s on u.id =  s.user.id " +
             "join Class c on s.aClass.class_id = c.class_id " +
             "WHERE s.aClass.semester  = :semester  and s.aClass.shift = :shift")
