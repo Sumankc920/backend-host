@@ -35,7 +35,7 @@ public interface StudentRepo extends JpaRepository<Student , Integer> {
             "WHERE s.aClass.semester  = :semester  and s.aClass.shift = :shift")
     List<Object> findStudentBySemAndShift(@Param("semester") int semester , @Param("shift") String shift);
 
-    @Query("SELECT u.email , u.name , u.role FROM Users u " +
+    @Query("SELECT u.email , u.name , s.roll FROM Users u " +
             "JOIN Student  s on u.id =  s.user.id " +
             "join Class c on s.aClass.class_id = c.class_id " +
             " join ClassSubjects cs on s.aClass.class_id = cs.aClass.class_id" +

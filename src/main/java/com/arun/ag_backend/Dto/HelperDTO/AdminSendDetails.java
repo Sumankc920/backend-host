@@ -14,6 +14,8 @@ import java.util.List;
 public class AdminSendDetails {
 
     private Subject subject;
-    private Object teacher_email;
+    private String teacher_email;
+
+    private String teacher_name;
     private List<Object> student;
 }

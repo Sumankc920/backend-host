@@ -33,7 +33,7 @@ public interface TeacherRepo extends JpaRepository<Teacher, Integer > {
 
 
     @Query("select t.users.email from TeacherSubjects t where t.aClass.shift=:shift and t.aClass.semester =:semester and t.subject.short_name=:subject_name")
-    List<Object> findTeacherBySemAndShiftAndSubject(@Param("subject_name") String subject_name ,@Param("semester") int semester , @Param("shift") String shift);
+    String findTeacherBySemAndShiftAndSubject(@Param("subject_name") String subject_name ,@Param("semester") int semester , @Param("shift") String shift);
 
 
 }
