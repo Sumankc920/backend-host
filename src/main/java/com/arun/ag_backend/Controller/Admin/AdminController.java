@@ -77,8 +77,8 @@ public class AdminController {
         Optional<Subject> sub = subjectRepo.findByShort_name(s.getSub_name());
 
         System.out.println(sub.get().toString());
-        Object obj = teacherRepo.findTeacherBySemAndShiftAndSubject(s.getSub_name() , s.getSemester() , s.getShift());
-        System.out.printf(obj.toString());
+        List<Object> obj = teacherRepo.findTeacherBySemAndShiftAndSubject(s.getSub_name() , s.getSemester() , s.getShift());
+//        System.out.printf(obj.toString());
         List<Object> objs =  admin_service.get_sub_all_details(s.getSub_name() , s.getSemester() , s.getShift());
         AdminSendDetails ad = new AdminSendDetails();
         ad.setStudent(objs);
