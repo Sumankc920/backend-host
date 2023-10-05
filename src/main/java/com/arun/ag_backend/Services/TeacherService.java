@@ -62,7 +62,7 @@ public class TeacherService {
     }
 
 
-    public List<String> findAttendance(String sub_name , LocalDate date , int class_id){
+    public List<Object> findAttendance(String sub_name , LocalDate date , int class_id){
 
         return attendanceRepo.findBySubjectAndDate(sub_name, date, class_id);
     }

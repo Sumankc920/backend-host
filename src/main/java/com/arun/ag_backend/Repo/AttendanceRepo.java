@@ -31,11 +31,11 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
     );
 
 
-    @Query("SELECT a.student.user.email , a.student.user.name FROM Attendance a " +
+    @Query("SELECT a.student.user.email , a.student.user.name , a.student.roll FROM Attendance a " +
             "WHERE a.classRoutine.subject.short_name = :subjectName " +
             "AND a.date = :date " +
             "AND a.classRoutine.aClass.class_id = :class_id")
-    List<String> findBySubjectAndDate(
+    List<Object> findBySubjectAndDate(
             @Param("subjectName") String subjectName,
             @Param("date") LocalDate date ,
             @Param("class_id") int class_id

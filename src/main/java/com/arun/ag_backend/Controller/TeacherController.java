@@ -57,7 +57,7 @@ public class TeacherController {
 
 
     @RequestMapping("/get_attendance")
-    public List<String> get_attendance(@RequestBody TeacherGetAttendance tbody){
+    public List<Object> get_attendance(@RequestBody TeacherGetAttendance tbody){
         return teacherService.findAttendance(tbody.getSub_name() , tbody.getDate() , tbody.getClass_id());
 
     }
