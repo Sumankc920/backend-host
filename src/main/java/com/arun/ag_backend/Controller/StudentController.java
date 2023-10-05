@@ -69,7 +69,8 @@ public class StudentController {
             list.add(subject.get().getName());
             Optional<Teacher> teacher =  teacherRepo.findByUserEmail(studentService.find_teacher_name_by_subject(sub_id, class_id));
             if(teacher.isPresent()){
-            list.add(teacher.get());
+            list.add(teacher.get().getUser().getName());
+            list.add(teacher.get().getUser().getEmail());
 
             if (student.isPresent()) {
 
