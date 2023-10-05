@@ -39,6 +39,6 @@ public interface Admin_a_Repo extends JpaRepository<Admin_assigned_Users , Integ
     @Transactional
     @Modifying
     @Query("UPDATE Admin_assigned_Users u SET u.aClass.class_id = :class_id WHERE u.email = :email")
-    void updateClassIdForUser(@Param("newClassId") int class_id, @Param("email") String email);
+    void updateClassIdForUser(@Param("class_id") int class_id, @Param("email") String email);
 
 }
