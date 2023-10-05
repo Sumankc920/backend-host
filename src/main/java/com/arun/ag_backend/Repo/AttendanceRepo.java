@@ -48,6 +48,6 @@ public interface AttendanceRepo extends JpaRepository<Attendance, Integer> {
             "and a.date =:date " +
             "and a.classRoutine.subject.short_name = :sub_name"
      )
-    String findStudentAttendaance(@Param("date") LocalDate date , @Param("roll") int roll , @Param("sub_name") String sub_name);
+    Optional<String> findStudentAttendaance(@Param("date") LocalDate date , @Param("roll") int roll , @Param("sub_name") String sub_name);
 
 }

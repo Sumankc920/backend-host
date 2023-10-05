@@ -63,7 +63,6 @@ public class TeacherController {
         Optional<List<Object>> stds = teacherService.findAttendance(tbody.getSub_name() , tbody.getDate() , tbody.getClass_id());
 
         if(stds.isPresent() && !stds.get().isEmpty()){
-            System.out.println("students present");
             return  stds.get();
         }else {
             return Collections.singletonList("There was no class in this date");

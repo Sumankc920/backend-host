@@ -67,10 +67,12 @@ public class StudentController {
 
 
             if (student.isPresent()) {
-                String status = attendanceRepo.findStudentAttendaance(tbody.getDate(), student.get().getRoll(), tbody.getSub_name());
+
+                Optional<String> status = attendanceRepo.findStudentAttendaance(tbody.getDate(), student.get().getRoll(), tbody.getSub_name());
+
                 list.add(String.valueOf(student.get().getRoll()));
-                if (status.equals("Present")) {
-                    list.add(status);
+                if(status.isPresent()){
+                    list.add("Present");
                 } else {
                     list.add("Absent");
                 }
