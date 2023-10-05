@@ -1,5 +1,6 @@
 package com.arun.ag_backend.Repo;
 
+import com.arun.ag_backend.Dto.TeacherDTO;
 import com.arun.ag_backend.Entities.*;
 import com.arun.ag_backend.Entities.Class;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ public interface TeacherRepo extends JpaRepository<Teacher, Integer > {
     @Query("SELECT t FROM Teacher t WHERE t.user.email = :email")
     Optional<Teacher> findByUserEmail(@Param("email") String email);
 
-    @Query("SELECT   u.email FROM Users u WHERE u.role = 'teacher'")
+    @Query("SELECT   u.email , u.name FROM Users u WHERE u.role = 'teacher'")
     List<Object> findAllTeachers();
 
     @Query("SELECT   c FROM Class c " +

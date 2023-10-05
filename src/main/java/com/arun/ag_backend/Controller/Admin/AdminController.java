@@ -2,6 +2,7 @@ package com.arun.ag_backend.Controller.Admin;
 
 import com.arun.ag_backend.Dto.HelperDTO.AdminSendDetails;
 import com.arun.ag_backend.Dto.SubjectInfo;
+import com.arun.ag_backend.Dto.TeacherDTO;
 import com.arun.ag_backend.Entities.*;
 import com.arun.ag_backend.Entities.Class;
 import com.arun.ag_backend.Repo.*;
