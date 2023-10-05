@@ -175,13 +175,13 @@ public class AdminController {
             if(user.isPresent()){
 
                 String email = user.get().getEmail();
-
+                int roll = user.get().getRoll();
                 if(adminAssignedRepo.findByStudent(email, class_id).isPresent()){
                     return ResponseEntity.ok("Student Already added");
                 }else{
 
                     adminAssignedRepo.updateClassIdForUser(class_id , email);
-                    studentRepo.updateClassIdForUser(class_id, email);
+                    studentRepo.updateClassIdForUser(class_id, roll);
 
                     return ResponseEntity.ok("Student updated");
                 }

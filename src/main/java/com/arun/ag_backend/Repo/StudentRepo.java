@@ -47,8 +47,8 @@ public interface StudentRepo extends JpaRepository<Student , Integer> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Student s SET s.aClass.class_id = :newClassId WHERE s.user.email = :email")
-    void updateClassIdForUser(@Param("newClassId") int newClassId, @Param("email") String email);
+    @Query("UPDATE Student s SET s.aClass.class_id = :class_id WHERE s.roll = :roll")
+    void updateClassIdForUser(@Param("class_id") int class_id, @Param("roll") int roll);
 
 
 }
