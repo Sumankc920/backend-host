@@ -125,22 +125,28 @@ public class AdminController {
 //
 //            return  "Already present";
 //        }
-        if(subject.isPresent() && teacher.isPresent() && aclass.isPresent()){
-            ClassSubjects cs = new ClassSubjects();
-            cs.setAClass(aclass.get());
-            cs.setSubject(subject.get());
-            classSubjectRepo.save(cs);
+        Optional<ClassSubjects> op_cs = classSubjectRepo.isSubjecPresent(aclass.get().getClass_id(),subject.get().getSubject_id());
+        if(op_cs.isEmpty()) {
 
-            Optional<Admin_assigned_Users> users = admin_service.findByEmail(s.getTeacher_email());
-            TeacherSubjects ts = new TeacherSubjects();
-            ts.setAClass(aclass.get());
-            ts.setUsers(users.get());
-            ts.setSubject(subject.get());
-            teacherSubjectRepo.save(ts);
 
-            return "success" ;
+            if (subject.isPresent() && teacher.isPresent() && aclass.isPresent()) {
+                ClassSubjects cs = new ClassSubjects();
+                cs.setAClass(aclass.get());
+                cs.setSubject(subject.get());
+                classSubjectRepo.save(cs);
+
+                Optional<Admin_assigned_Users> users = admin_service.findByEmail(s.getTeacher_email());
+                TeacherSubjects ts = new TeacherSubjects();
+                ts.setAClass(aclass.get());
+                ts.setUsers(users.get());
+                ts.setSubject(subject.get());
+                teacherSubjectRepo.save(ts);
+
+                return "success";
+            }
+        }else{
+            return "Already added";
         }
-
 
     return "Fail" ;
 
