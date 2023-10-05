@@ -1,5 +1,6 @@
 package com.arun.ag_backend.Controller.Admin;
 
+import com.arun.ag_backend.Dto.HelperDTO.AdminAddStudentDTO;
 import com.arun.ag_backend.Dto.HelperDTO.AdminSendDetails;
 import com.arun.ag_backend.Dto.SubjectInfo;
 import com.arun.ag_backend.Dto.TeacherDTO;
@@ -23,6 +24,9 @@ import java.util.Optional;
 @RequestMapping("/admin")
 public class AdminController {
 
+
+    @Autowired
+    private Admin_a_Repo adminAssignedRepo;
 
     @Autowired
     private ClassRoutineService classRoutineService;
@@ -152,5 +156,39 @@ public class AdminController {
 
     return "Fail" ;
 
+    }
+
+
+    @RequestMapping("/add_student")
+    public ResponseEntity<String> add_student(@RequestBody AdminAddStudentDTO adminAddStudentDTO){
+        Optional<Class> class_ = classRepo.findBySem_faculty_shift(Integer.parseInt((adminAddStudentDTO.getSemester())), adminAddStudentDTO.getShift());
+
+        if(class_.isPresent()){
+            int class_id = class_.get().getClass_id();
+//            System.out.println(class_.get().toString());
+            Optional<Admin_assigned_Users> user = adminAssignedRepo.findByEmail(adminAddStudentDTO.getEmail());
+            if(user.isPresent()){
+
+                String email = user.get().getEmail();
+
+                if(adminAssignedRepo.findByStudent(email, class_id).isPresent()){
+                    return ResponseEntity.ok("Student Already added");
+                }else{
+
+                    adminAssignedRepo.updateClassIdForUser(class_id , email);
+                    return ResponseEntity.ok("Student updated");
+                }
+             }else{
+                Admin_assigned_Users new_user = new Admin_assigned_Users();
+                new_user.setEmail(adminAddStudentDTO.getEmail());
+                new_user.setAClass(class_.get());
+                new_user.setRoll(Integer.parseInt(adminAddStudentDTO.getRoll()));
+                new_user.setUser_role(adminAddStudentDTO.getUser_role());
+                adminAssignedRepo.save(new_user);
+                return ResponseEntity.ok("New Student Added");
+            }
+        }else {
+            return ResponseEntity.ok("Invalid Class");
+        }
     }
 }
