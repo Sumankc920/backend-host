@@ -3,7 +3,9 @@ package com.arun.ag_backend.Repo;
 import com.arun.ag_backend.Entities.Student;
 import com.arun.ag_backend.Entities.Subject;
 import com.arun.ag_backend.Entities.Teacher;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -42,4 +44,11 @@ public interface StudentRepo extends JpaRepository<Student , Integer> {
             " join Subject st on cs.subject.subject_id = st.subject_id " +
             "WHERE s.aClass.semester  = :semester  and s.aClass.shift = :shift and st.short_name = :subject_name ")
     List<Object> findStudentBySemAndShiftAndSubject(@Param("subject_name") String subject_name ,@Param("semester") int semester , @Param("shift") String shift);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Student s SET s.aClass.class_id = :newClassId WHERE s.user.email = :email")
+    void updateClassIdForUser(@Param("newClassId") int newClassId, @Param("email") String email);
+
+
 }

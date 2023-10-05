@@ -35,6 +35,11 @@ public class AdminController {
     private Admin_a_User_Service admin_service;
 
     @Autowired
+    private StudentRepo studentRepo;
+
+
+
+    @Autowired
     private TeacherRepo teacherRepo;
 
     @Autowired
@@ -176,6 +181,8 @@ public class AdminController {
                 }else{
 
                     adminAssignedRepo.updateClassIdForUser(class_id , email);
+                    studentRepo.updateClassIdForUser(class_id, email);
+
                     return ResponseEntity.ok("Student updated");
                 }
              }else{
